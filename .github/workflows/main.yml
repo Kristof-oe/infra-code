@@ -1,0 +1,24 @@
+on:
+  push:
+    branches: [main]
+
+# same job as pr.yml, then:
+#   terraform apply -auto-approve
+
+jobs: 
+  Apply:
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - uses: hashicorp/setup-terraform@v4
+      - run: terraform init
+      - run: terraform validate
+      - run: terraform plan
+      - run: terraform apply -auto-approve
