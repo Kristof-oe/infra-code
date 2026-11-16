@@ -16,13 +16,13 @@ data "aws_iam_policy_document" "service_trust" {
       values   = ["sts.amazonaws.com"]
     }
     condition {
-      test     = "StringEquals"
+      test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:Kristof-oe/service-code:ref:refs/heads/main"]
+      values   = ["repo:Kristof-oe@*/service-code@*:ref:refs/heads/main",
+      "repo:Kristof-oe@*/service-code@*:pull_request*"]
     }
   }
 }
-
 resource "aws_iam_role" "gha_service" {
   name               = "${var.name}-gha-service"
   assume_role_policy = data.aws_iam_policy_document.service_trust.json
@@ -70,8 +70,8 @@ data "aws_iam_policy_document" "infra_trust"{
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:Kristof-oe/infra-code:pull_request",
-                  "repo:Kristof-oe/infra-code:ref:refs/heads/main"]
+      values   = ["repo:Kristof-oe@*/infra-code@*:pull_request*",
+                  "repo:Kristof-oe@*/infra-code@*:ref:refs/heads/main"]
     }
   }
 }
