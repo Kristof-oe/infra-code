@@ -18,7 +18,7 @@ data "aws_iam_policy_document" "service_trust" {
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:Kristof-oe@*/service-code@*:ref:refs/heads/main",
+      values = ["repo:Kristof-oe@*/service-code@*:ref:refs/heads/main",
       "repo:Kristof-oe@*/service-code@*:pull_request*"]
     }
   }
@@ -44,19 +44,19 @@ resource "aws_iam_role_policy" "oidc" {
         Effect   = "Allow"
         Resource = "*"
       },
-      {     
+      {
         Effect = "Allow"
         Action = [
-            "ecr:*"
+          "ecr:*"
         ]
         Resource = aws_ecr_repository.hello.arn
-        }
+      }
     ]
   })
 }
 
-data "aws_iam_policy_document" "infra_trust"{
-    statement {
+data "aws_iam_policy_document" "infra_trust" {
+  statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]
     principals {
       type        = "Federated"
@@ -70,8 +70,8 @@ data "aws_iam_policy_document" "infra_trust"{
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:Kristof-oe@*/infra-code@*:pull_request*",
-                  "repo:Kristof-oe@*/infra-code@*:ref:refs/heads/main"]
+      values = ["repo:Kristof-oe@*/infra-code@*:pull_request*",
+      "repo:Kristof-oe@*/infra-code@*:ref:refs/heads/main"]
     }
   }
 }
@@ -82,8 +82,8 @@ resource "aws_iam_role" "gha_infra" {
 }
 
 resource "aws_iam_role_policy_attachment" "gha_infra_admin" {
-    role= aws_iam_role.gha_infra.name
-    policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+  role       = aws_iam_role.gha_infra.name
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
 
 resource "aws_eks_access_entry" "gha_infra" {

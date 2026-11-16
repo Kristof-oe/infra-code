@@ -9,8 +9,8 @@ data "aws_iam_policy_document" "eks_assume" {
 }
 
 resource "aws_iam_role" "cluster" {
-  name               = "${var.name}-eks-cluster"
-  assume_role_policy =jsonencode({
+  name = "${var.name}-eks-cluster"
+  assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
@@ -28,7 +28,7 @@ resource "aws_iam_role" "cluster" {
 # + aws_iam_role_policy_attachment: AmazonEKSClusterPolicy
 
 resource "aws_iam_role_policy_attachment" "cluster" {
-  role = aws_iam_role.cluster.name
+  role       = aws_iam_role.cluster.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
 }
 
@@ -64,7 +64,7 @@ resource "aws_iam_role" "node" {
 }
 
 resource "aws_iam_role_policy_attachment" "node_AmazonEKSWorkerNodePolicy" {
-  role = aws_iam_role.node.name
+  role       = aws_iam_role.node.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
 }
 
@@ -95,10 +95,10 @@ resource "aws_eks_node_group" "default" {
 
   # depends_on: the node policy attachments and the route table associations
 
-  depends_on = [    
+  depends_on = [
     aws_iam_role_policy_attachment.node_AmazonEC2ContainerRegistryReadOnly,
     aws_iam_role_policy_attachment.node_AmazonEKS_CNI_Policy,
     aws_iam_role_policy_attachment.node_AmazonEKSWorkerNodePolicy,
     aws_route_table_association.assoc
-    ]
+  ]
 }
