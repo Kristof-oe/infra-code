@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: hello
-          image: 362099375729.dkr.ecr.us-east-2.amazonaws.com/nemtom/hello:1.0.2
+          image: 362099375729.dkr.ecr.us-east-2.amazonaws.com/nemtom/hello:1.0.3
           ports:
             - containerPort: 8080
