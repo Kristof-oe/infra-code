@@ -9,7 +9,7 @@ output "ecr_repository_url" {
 # + infra_role_arn, and the update-kubeconfig command
 
 output "infra_role_arn" {
-value = aws_iam_role.gha_infra.arm
+value = aws_iam_role.gha_infra.arn
 }
 
 output "update_config" {

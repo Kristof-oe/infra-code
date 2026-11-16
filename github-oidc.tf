@@ -55,7 +55,7 @@ resource "aws_iam_role_policy" "oidc" {
   })
 }
 
-resource "aws_iam_policy_document" "infra_trust"{
+data "aws_iam_policy_document" "infra_trust"{
     statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]
     principals {
